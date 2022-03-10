@@ -29,7 +29,6 @@ jobs:
       run: go get
 
     - name: Build
-      working-directory: ${{ env.GOROOT }}
       run: go build -v helloworld.go
 
     - name: Test
