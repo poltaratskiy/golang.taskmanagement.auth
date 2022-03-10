@@ -22,8 +22,8 @@ jobs:
       with:
         go-version: 1.17.8
 
-    - name: Build
-      run: go build -v ${{ env.DIRECTORY }}/helloworld.go
+    #- name: Build
+    #  run: go build -v ${{ env.DIRECTORY }}/helloworld.go
 
     - name: Test
       run: go test -v ./...
