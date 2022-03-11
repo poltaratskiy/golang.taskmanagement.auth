@@ -3,16 +3,19 @@ name: Go dev
 on:
   push:
     branches: [ feature/* ]
-  pull_request:
-    branches: [ feature/* ]
+  #pull_request:
+  #  branches: [ feature/* ]
 
 env:
   DIRECTORY: src
-  TESTS_DIRECTORY: src/tests
+  PATH_TO_DOCKERFILE: docker/Dockerfile
+  DOCKER_REPOSITORY: tasktracker
+  DOCKER_NAMESPACE: ${{ secrets.DOCKER_USERNAME }}
 
 jobs:
 
   build:
+    name: Build and tests
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -25,17 +28,26 @@ jobs:
       with:
         go-version: 1.17.8
 
-    - name: Show github.ref
-      env:
-        github_ref: ${{ github.ref }}
-      run: |
-        echo github_ref ${{ github.ref }}
-        echo ${github_ref:1}
-        echo ${github_ref:2}
-        echo ${github_ref:3}
-
     - name: Build
       run: go build -v
 
     - name: Test
       run: go test -v ./...
+
+  docker:
+    name: Build and push Docker image to Docker hub
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.DIRECTORY }}
+
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v2
+
+    - name: Docker login
+      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} docker.io
+    - name: Build docker repo
+      run: docker build -f ${{ env.PATH_TO_DOCKERFILE }} -t ${{ env.DOCKER_NAMESPACE }}/${{ env.DOCKER_REPOSITORY }}:dev-$GITHUB_RUN_NUMBER .
+    - name: Push to Docker Hub
+      run: docker push ${{ env.DOCKER_NAMESPACE }}/${{ env.DOCKER_REPOSITORY }}:dev-$GITHUB_RUN_NUMBER
