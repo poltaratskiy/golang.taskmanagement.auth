@@ -2,10 +2,25 @@ name: Go Release
 
 on:
   release:
-    branches: [ "main" ]
+    types: [ published ]
 
 env:
   DIRECTORY: src
   PATH_TO_DOCKERFILE: docker/Dockerfile
   DOCKER_NAMESPACE: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_REPOSITORY: go_tasktracker
+
+jobs:
+  release:
+    name: Build and bush release version of Docker image
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.DIRECTORY }}
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17.8
