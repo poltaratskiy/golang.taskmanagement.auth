@@ -2,7 +2,7 @@ name: Go Release
 
 on:
   release:
-    types: [ created, edited ]
+    types: [ created, edited, prereleased ]
 
 env:
   DIRECTORY: src
