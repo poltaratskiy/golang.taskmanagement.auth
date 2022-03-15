@@ -11,7 +11,7 @@ env:
   DOCKER_REPOSITORY: go_tasktracker
 
 jobs:
-  release:
+  build:
     name: Build and bush release version of Docker image
     runs-on: ubuntu-latest
     defaults:
