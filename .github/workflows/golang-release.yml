@@ -19,8 +19,21 @@ jobs:
         working-directory: ${{ env.DIRECTORY }}
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
         go-version: 1.17.8
+
+    - name: Set tag environment variable
+      id: branch_name
+      run: |
+        echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/*/}
+        echo ::set-output name=SOURCE_BRANCH::${GITHUB_REF#refs/heads/}
+        echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
+    
+    - name: Show version variable
+      run: |
+        echo Source tag: ${{ steps.branch_name.outputs.SOURCE_TAG }}
+        echo Source name: ${{ steps.branch_name.outputs.SOURCE_NAME }}
+        echo Source branch: ${{ steps.branch_name.outputs.SHOURCE_BRANCH }}
