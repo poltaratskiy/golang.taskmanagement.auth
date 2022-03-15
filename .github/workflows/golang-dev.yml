@@ -44,6 +44,9 @@ jobs:
         echo Source tag: ${{ steps.branch_name.outputs.SOURCE_TAG }}
         echo Source name: ${{ steps.branch_name.outputs.SOURCE_NAME }}
         echo Source branch: ${{ steps.branch_name.outputs.SHOURCE_BRANCH }}
+        echo GITHUB REF 1: ${GITHUB_REF}
+        echo GITHUB REF 2: ${GITHUB_REF}
+        echo GITHUB REF 3: ${GITHUB_REF}
 
 #    - name: Docker login
 #      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} docker.io
