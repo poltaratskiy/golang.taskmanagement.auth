@@ -1,0 +1,11 @@
+name: Go Release
+
+on:
+  release:
+    branches: [ "main" ]
+
+env:
+  DIRECTORY: src
+  PATH_TO_DOCKERFILE: docker/Dockerfile
+  DOCKER_NAMESPACE: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_REPOSITORY: go_tasktracker
