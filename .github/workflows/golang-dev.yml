@@ -32,18 +32,24 @@ jobs:
     - name: Test
       run: go test -v ./...
 
-    - name: Branch name
+    - name: Set tag environment variable
       id: branch_name
       run: |
         echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/*/}
         echo ::set-output name=SOURCE_BRANCH::${GITHUB_REF#refs/heads/}
         echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
+    
+    - name: Show version variable
+      run: |
+        echo Source tag: ${{ steps.branch_name.outputs.SOURCE_TAG }}
+        echo Source name: ${{ steps.branch_name.outputs.SOURCE_NAME }}
+        echo Source branch: ${{ steps.branch_name.outputs.SHOURCE_BRANCH }}
 
-    - name: Docker login
-      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} docker.io
-    - name: Build docker repo
-      run: docker build -f ${{ env.PATH_TO_DOCKERFILE }} -t ${{ env.DOCKER_NAMESPACE }}/${{ env.DOCKER_REPOSITORY }}:dev-$GITHUB_RUN_NUMBER .
-    - name: Push to Docker Hub
-      run: docker push ${{ env.DOCKER_NAMESPACE }}/${{ env.DOCKER_REPOSITORY }}:dev-$GITHUB_RUN_NUMBER
+#    - name: Docker login
+#      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} docker.io
+#    - name: Build docker repo
+#      run: docker build -f ${{ env.PATH_TO_DOCKERFILE }} -t ${{ env.DOCKER_NAMESPACE }}/${{ env.DOCKER_REPOSITORY }}:dev-$GITHUB_RUN_NUMBER .
+#    - name: Push to Docker Hub
+#      run: docker push ${{ env.DOCKER_NAMESPACE }}/${{ env.DOCKER_REPOSITORY }}:dev-$GITHUB_RUN_NUMBER
 
     
