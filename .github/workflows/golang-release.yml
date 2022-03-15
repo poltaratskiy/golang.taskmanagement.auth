@@ -2,7 +2,7 @@ name: Go Release
 
 on:
   release:
-    types: [ created, edited, prereleased ]
+    types: [ created, edited, prereleased, published ]
 
 env:
   DIRECTORY: src
@@ -20,10 +20,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.17.8
+    - name: Show GITHUB_REF
+      run: echo GITHUB_REF ${GITHUB_REF}
+    
+    #- name: Set up Go
+    #  uses: actions/setup-go@v2
+    #  with:
+    #    go-version: 1.17.8
 
     - name: Set tag environment variable
       id: branch_name
